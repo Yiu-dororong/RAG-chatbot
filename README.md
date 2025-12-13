@@ -65,7 +65,7 @@ It should look like this.
 
 # Follow up
 
-There sereval things can be improved that I would like to address.
+There are sereval things can be improved that I would like to address.
 
 LLM configuration: I don't suggest to tune the ```temperature```, but one may change ```top_k``` and ```top_k``` and so on.
 
