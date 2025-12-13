@@ -33,6 +33,8 @@ The whole process can be broken down a few parts. ```PyPDFLoader``` first load t
 
 Finally, we will utilize LLM to understand our query and use ```RetrievalQA``` to look up the context vectors that are most likely to answer the query from the source (pdf).
 
+**Note:** ```PyPDFLoader``` can only load text but not images of text. If you cannot highlight the text, then it is very probable that the file cannot be read by the loader. Solutions may be parsing to OCR or AI.
+
 # Interface
 
 To wrap all these things up, we can host a website to give a more user-friendly interface to run the process by gradio.
