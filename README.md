@@ -69,7 +69,7 @@ It should look like this.
 
 There are sereval things can be improved that I would like to address.
 
-LLM configuration: I don't suggest to tune the ```temperature```, but one may change ```top_k``` and ```top_k``` and so on.
+LLM configuration: I don't suggest to tune the ```temperature```, but one may change ```top_p``` and ```top_k``` and so on.
 
 Multiple input: Extend from one pdf to more is definitely worth trying. It can be various file type, or many pdfs, or both. However, this requires complete update on the code syntax.
 
@@ -86,6 +86,29 @@ The architecture has a wider converage on error-handling. It first query the LLM
 Next, the query enters to the research agent, which serves as a standard RAG system to find relevant information. When it completes, it passes to the verification agent to check whether the extracted information is relevant and reasonable to answer the query. If not, it will return to the research agent to find again.
 
 After the research is completed, all the information is passed to LLM to wrap the response in a more comfortable format back to the user.
+
+For a more accurate result, one may want to use a reranker model. Please revise the retriever. Here is an example:
+
+```
+from langchain.retrievers import ContextualCompressionRetriever
+from langchain_cohere import CohereRerank
+
+def retriever(file):
+    splits = document_loader(file)
+    chunks = text_splitter(splits)
+    vectordb = vector_database(chunks)
+    
+    retriever = vectordb.as_retriever()
+    
+    compressor = CohereRerank(model="rerank-english-v3.0", top_n=3)
+    
+    reranking_retriever = ContextualCompressionRetriever(
+        base_compressor=compressor, 
+        base_retriever=retriever
+    )
+    
+    return reranking_retriever
+```
 
 ## Evaluation
 
